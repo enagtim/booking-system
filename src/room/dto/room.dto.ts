@@ -14,7 +14,7 @@ interface ILocation {
 	region: string;
 	address: string;
 }
-export interface IRoomModel {
+export interface IRoomModelDto {
 	title: string;
 	images: string[];
 	discription: string;
