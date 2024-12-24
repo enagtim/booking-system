@@ -66,5 +66,8 @@ export class RoomModel {
 
 	@Prop({ type: [Feedback] })
 	feedback: Feedback[];
+
+	@Prop({ required: false })
+	deletedAt?: Date;
 }
 export const RoomModelSchema = SchemaFactory.createForClass(RoomModel);
