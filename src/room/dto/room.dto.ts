@@ -1,18 +1,14 @@
-interface IFeedback {
-	author: string;
-	text: string;
-	location?: {
-		city?: string;
-		country?: string;
-		region?: string;
-	};
-	createdAt: Date;
-}
 interface ILocation {
 	city: string;
 	country: string;
 	region: string;
 	address: string;
+}
+interface IFeedback {
+	author: string;
+	text: string;
+	location?: ILocation;
+	createdAt: Date;
 }
 export interface IRoomModelDto {
 	title: string;

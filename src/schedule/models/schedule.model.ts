@@ -18,10 +18,10 @@ export class ScheduleModel {
 	@Prop({ type: Types.ObjectId, ref: RoomModel.name })
 	room_id: Types.ObjectId;
 
-	@Prop({ required: true })
+	@Prop()
 	bookingDate: Date;
 
-	@Prop({ required: true, enum: BookingStatus, default: BookingStatus.PENDING })
+	@Prop({ enum: BookingStatus, default: BookingStatus.PENDING })
 	status: BookingStatus;
 
 	@Prop({ required: false })

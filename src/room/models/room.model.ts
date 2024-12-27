@@ -4,70 +4,60 @@ import { HydratedDocument, Types } from 'mongoose';
 export type RoomDocument = HydratedDocument<RoomModel>;
 
 @Schema()
-class Feedback {
-	@Prop({ required: true })
-	author: string;
-
-	@Prop({ required: true })
-	text: string;
-
-	@Prop({
-		type: { city: String, country: String, region: String },
-		required: false,
-	})
-	location?: {
-		city?: string;
-		country?: string;
-		region?: string;
-	};
-
-	@Prop({ required: true })
-	createdAt: Date;
-}
-@Schema()
 class Location {
-	@Prop({ required: true })
+	@Prop()
 	city: string;
 
-	@Prop({ required: true })
+	@Prop()
 	country: string;
 
-	@Prop({ required: true })
+	@Prop()
 	region: string;
 
-	@Prop({ required: true })
+	@Prop()
 	address: string;
+}
+@Schema({ timestamps: true })
+class Feedback {
+	@Prop()
+	author: string;
+
+	@Prop()
+	text: string;
+
+	@Prop({ type: Location, required: false })
+	location?: Location;
 }
 @Schema()
 export class RoomModel {
 	@Prop({ type: Types.ObjectId, auto: true })
 	_id: Types.ObjectId;
 
-	@Prop({ required: true })
+	@Prop()
 	title: string;
 
-	@Prop({ type: [String] })
+	@Prop({ type: () => [String] })
 	images: string[];
 
-	@Prop({ required: true })
+	@Prop()
 	discription: string;
 
-	@Prop({ required: true })
+	@Prop()
 	countRooms: number;
 
-	@Prop({ type: [String] })
+	@Prop({ type: () => [String] })
 	facilities: string[];
 
 	@Prop({ default: 0 })
 	rating: number;
 
-	@Prop({ required: true, type: Location })
+	@Prop({ type: Location })
 	location: Location;
 
-	@Prop({ type: [Feedback] })
+	@Prop({ type: () => [Feedback] })
 	feedback: Feedback[];
 
-	@Prop({ required: false })
+	@Prop()
 	deletedAt?: Date;
 }
 export const RoomModelSchema = SchemaFactory.createForClass(RoomModel);
