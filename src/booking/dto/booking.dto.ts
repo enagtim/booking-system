@@ -3,7 +3,7 @@ enum BookingStatus {
 	COMPLETED = 'completed',
 	REJECTED = 'rejected',
 }
-export interface IScheduleModelDTO {
+export interface IBookingModelDTO {
 	room_id: string;
 	bookingDate: Date;
 	status: BookingStatus;

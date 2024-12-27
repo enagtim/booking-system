@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { RoomModel } from 'src/room/models/room.model';
 
-export type ScheduleDocument = HydratedDocument<ScheduleModel>;
+export type BookingDocument = HydratedDocument<BookingModel>;
 
 export enum BookingStatus {
 	PENDING = 'pending',
@@ -11,7 +11,7 @@ export enum BookingStatus {
 }
 
 @Schema({ timestamps: true })
-export class ScheduleModel {
+export class BookingModel {
 	@Prop({ type: Types.ObjectId, auto: true })
 	_id: Types.ObjectId;
 
@@ -27,4 +27,4 @@ export class ScheduleModel {
 	@Prop({ required: false })
 	deletedAt?: Date;
 }
-export const ScheduleModelSchema = SchemaFactory.createForClass(ScheduleModel);
+export const BookingModelSchema = SchemaFactory.createForClass(BookingModel);
