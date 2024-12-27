@@ -4,60 +4,58 @@ import { BookingModel, BookingDocument } from './models/booking.model';
 import { Model } from 'mongoose';
 import { IBookingModelDTO } from './dto/booking.dto';
 import { RoomModel } from 'src/room/models/room.model';
+import { BOOKING_NOT_FOUND, ROOM_BOOKING, ROOM_NOT_FOUND } from 'messages/error.messages';
 
 @Injectable()
 export class BookingService {
 	constructor(
-		@InjectModel(BookingModel.name) private scheduleModel: Model<BookingDocument>,
+		@InjectModel(BookingModel.name) private bookingModel: Model<BookingDocument>,
 		@InjectModel(RoomModel.name) private roomModel: Model<RoomModel>,
 	) {}
-	public async create(createScheduleDto: IBookingModelDTO): Promise<BookingModel> {
-		const room = await this.roomModel.findById(createScheduleDto.room_id);
+	public async create(dto: IBookingModelDTO): Promise<BookingModel> {
+		const room = await this.roomModel.findById(dto.room_id);
 		if (!room) {
-			throw new NotFoundException(`Room with ID ${createScheduleDto.room_id} not found`);
+			throw new NotFoundException(ROOM_NOT_FOUND);
 		}
-		const existingBooking = await this.scheduleModel.findOne({
-			room_id: createScheduleDto.room_id,
-			bookingDate: createScheduleDto.bookingDate,
+		const existingBooking = await this.bookingModel.findOne({
+			room_id: dto.room_id,
+			bookingDate: dto.bookingDate,
 		});
 		if (existingBooking) {
-			throw new BadRequestException(`Room is already booked on ${createScheduleDto.bookingDate}`);
+			throw new BadRequestException(ROOM_BOOKING);
 		}
-		const newSchedule = new this.scheduleModel(createScheduleDto);
-		return newSchedule.save();
+		const newBooking = new this.bookingModel(dto);
+		return newBooking.save();
 	}
 	public async getAll(): Promise<BookingModel[]> {
-		return this.scheduleModel.find().exec();
+		return this.bookingModel.find().exec();
 	}
 	public async getById(id: string): Promise<BookingModel> {
-		const schedule = await this.scheduleModel.findById(id).exec();
-		if (!schedule) {
-			throw new NotFoundException(`Schedule with ID ${id} not found`);
+		const booking = await this.bookingModel.findById(id).exec();
+		if (!booking) {
+			throw new NotFoundException(BOOKING_NOT_FOUND);
 		}
-		return schedule;
+		return booking;
 	}
-	public async update(
-		id: string,
-		updatedScheduleDto: Partial<IBookingModelDTO>,
-	): Promise<BookingModel> {
-		const existingSchedule = await this.scheduleModel.findById(id).exec();
-		if (!existingSchedule) {
-			throw new NotFoundException(`Schedule with ID ${id} not found`);
+	public async update(id: string, dto: Partial<IBookingModelDTO>): Promise<BookingModel> {
+		const existingBooking = await this.bookingModel.findById(id).exec();
+		if (!existingBooking) {
+			throw new NotFoundException(BOOKING_NOT_FOUND);
 		}
-		return this.scheduleModel.findByIdAndUpdate(id, updatedScheduleDto, { new: true }).exec();
+		return this.bookingModel.findByIdAndUpdate(id, dto, { new: true }).exec();
 	}
 	public async softDelete(id: string): Promise<BookingModel> {
-		const schedule = await this.scheduleModel.findById(id).exec();
-		if (!schedule) {
-			throw new NotFoundException(`Schedule with ID ${id} not found`);
+		const booking = await this.bookingModel.findById(id).exec();
+		if (!booking) {
+			throw new NotFoundException(BOOKING_NOT_FOUND);
 		}
-		schedule.deletedAt = new Date();
-		return schedule;
+		booking.deletedAt = new Date();
+		return booking;
 	}
 	public async delete(id: string): Promise<void> {
-		const result = await this.scheduleModel.deleteOne({ _id: id }).exec();
+		const result = await this.bookingModel.deleteOne({ _id: id }).exec();
 		if (result.deletedCount === 0) {
-			throw new NotFoundException(`Schedule with ID ${id} not found`);
+			throw new NotFoundException(BOOKING_NOT_FOUND);
 		}
 	}
 }
