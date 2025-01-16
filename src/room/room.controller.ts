@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, HttpCode, Patch, Post, Query } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	HttpCode,
+	Patch,
+	Post,
+	Query,
+	UsePipes,
+	ValidationPipe,
+} from '@nestjs/common';
 import { RoomService } from './room.service';
 import { IRoomModelDto } from './dto/room.dto';
 import { RoomModel } from './models/room.model';
@@ -7,6 +18,7 @@ import { RoomModel } from './models/room.model';
 export class RoomController {
 	constructor(private readonly roomService: RoomService) {}
 
+	@UsePipes(new ValidationPipe())
 	@Post('create')
 	@HttpCode(201)
 	public async createRoom(@Body() dto: IRoomModelDto): Promise<RoomModel> {

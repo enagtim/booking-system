@@ -8,6 +8,7 @@ import * as request from 'supertest';
 const testDto: IBookingModelDTO = {
 	room_id: '6788d1e7e809a248c257e027',
 	bookingDate: new Date(),
+	status: 'pending',
 };
 
 describe('BookingController (e2e)', () => {
@@ -21,10 +22,10 @@ describe('BookingController (e2e)', () => {
 		app = moduleFixture.createNestApplication();
 		await app.init();
 	});
-	it('/booking/create (POST) ', async () => {
+	it('/booking/create (POST) - SUCCESS', async () => {
 		return request(app.getHttpServer())
 			.post('/booking/create')
-			.send(testDto)
+			.send({ ...testDto, bookingDate: testDto.bookingDate.toISOString() })
 			.expect(201)
 			.then(({ body }: request.Response) => {
 				createdId = body._id;

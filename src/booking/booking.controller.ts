@@ -1,4 +1,15 @@
-import { Controller, Post, Body, HttpCode, Get, Patch, Delete, Query } from '@nestjs/common';
+import {
+	Controller,
+	Post,
+	Body,
+	HttpCode,
+	Get,
+	Patch,
+	Delete,
+	Query,
+	UsePipes,
+	ValidationPipe,
+} from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { IBookingModelDTO } from './dto/booking.dto';
 import { BookingModel } from './models/booking.model';
@@ -7,6 +18,7 @@ import { BookingModel } from './models/booking.model';
 export class BookingController {
 	constructor(private readonly bookingService: BookingService) {}
 
+	@UsePipes(new ValidationPipe())
 	@Post('create')
 	@HttpCode(201)
 	public async createBooking(@Body() dto: IBookingModelDTO): Promise<BookingModel> {
