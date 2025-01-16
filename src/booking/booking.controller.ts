@@ -30,7 +30,7 @@ export class BookingController {
 	): Promise<BookingModel> {
 		return this.bookingService.update(id, dto);
 	}
-	@Delete('delete/rejected/:id')
+	@Delete('delete/:id')
 	@HttpCode(204)
 	public async delete(@Query('id') id: string, @Query('status') status: 'rejected'): Promise<void> {
 		await this.bookingService.delete(id, status);
