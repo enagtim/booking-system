@@ -32,6 +32,12 @@ describe('RoomController (e2e)', () => {
 				expect(createdId).toBeDefined();
 			});
 	});
+	it('/room/create (POST) - BAD', () => {
+		return request(app.getHttpServer())
+			.post('/room/create')
+			.send({ ...testDto, countRooms: 0 })
+			.expect(400);
+	});
 	it('/room/all (GET) - SUCCESS', async () => {
 		return request(app.getHttpServer())
 			.get('/room/all')
@@ -48,7 +54,7 @@ describe('RoomController (e2e)', () => {
 	it('/room/get/:id (GET) - SUCCESS', async () => {
 		return request(app.getHttpServer()).get(`/room/get/:id?id=${createdId}`).expect(200);
 	});
-	it('/room/get/:id (GET) - BAD', async () => {
+	it('/room/get/:id (GET) - BAD', () => {
 		return request(app.getHttpServer())
 			.get(`/room/get/:id?id=60e8f06a2e9b9b3b2c8d7e6a`)
 			.expect(404);
@@ -59,12 +65,12 @@ describe('RoomController (e2e)', () => {
 			.expect(200)
 			.send({ title: 'Прекрасная комната в центре города' });
 	});
-	it('/room/update/:id (PATCH) - BAD', async () => {
+	it('/room/update/:id (PATCH) - BAD', () => {
 		return request(app.getHttpServer())
 			.patch(`/room/update/:id?id=60e8f06a2e9b9b3b2c8d7e6a`)
 			.expect(404);
 	});
-	it('/room/delete/:id (DELETE) - BAD', async () => {
+	it('/room/delete/:id (DELETE) - BAD', () => {
 		return request(app.getHttpServer())
 			.delete(`/room/delete/:id?id=60e8f06a2e9b9b3b2c8d7e6a`)
 			.expect(404);

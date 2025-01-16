@@ -2,13 +2,13 @@ import { INestApplication } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
 import { disconnect } from 'mongoose';
 import { AppModule } from '../src/app.module';
-import { IBookingModelDTO } from '../src/booking/dto/booking.dto';
+import { BookingStatus, IBookingModelDTO } from '../src/booking/dto/booking.dto';
 import * as request from 'supertest';
 
 const testDto: IBookingModelDTO = {
 	room_id: '6788d1e7e809a248c257e027',
 	bookingDate: new Date(),
-	status: 'pending',
+	status: BookingStatus.PENDING,
 };
 
 describe('BookingController (e2e)', () => {
@@ -32,6 +32,12 @@ describe('BookingController (e2e)', () => {
 				expect(createdId).toBeDefined();
 			});
 	});
+	it('/booking/create (POST) - BAD', () => {
+		return request(app.getHttpServer())
+			.post('/booking/create')
+			.send({ ...testDto, bookingDate: testDto.bookingDate.toISOString(), status: 'long' })
+			.expect(400);
+	});
 	it('/booking/all (GET) - SUCCESS', async () => {
 		return request(app.getHttpServer())
 			.get('/booking/all')
@@ -48,7 +54,7 @@ describe('BookingController (e2e)', () => {
 	it('/booking/get/:id (GET) - SUCCESS', async () => {
 		return request(app.getHttpServer()).get(`/booking/get/:id?id=${createdId}`).expect(200);
 	});
-	it('/booking/get/:id (GET) - BAD', async () => {
+	it('/booking/get/:id (GET) - BAD', () => {
 		return request(app.getHttpServer())
 			.get('/booking/get/:id?id=60e8f06a2e9b9b3b2c8d7e6a')
 			.expect(404);
@@ -59,12 +65,12 @@ describe('BookingController (e2e)', () => {
 			.send({ status: 'rejected' })
 			.expect(200);
 	});
-	it('/booking/update/:id (PATCH) - BAD', async () => {
+	it('/booking/update/:id (PATCH) - BAD', () => {
 		return request(app.getHttpServer())
 			.patch('/booking/update/:id?id=60e8f06a2e9b9b3b2c8d7e6a')
 			.expect(404);
 	});
-	it('/booking/delete/:id (DELETE) - BAD', async () => {
+	it('/booking/delete/:id (DELETE) - BAD', () => {
 		return request(app.getHttpServer())
 			.delete(`/booking/delete/:id?id=${createdId}&status=pending`)
 			.expect(400);

@@ -11,7 +11,7 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { IBookingModelDTO } from './dto/booking.dto';
+import { BookingStatus, IBookingModelDTO } from './dto/booking.dto';
 import { BookingModel } from './models/booking.model';
 
 @Controller('booking')
@@ -44,7 +44,10 @@ export class BookingController {
 	}
 	@Delete('delete/:id')
 	@HttpCode(204)
-	public async delete(@Query('id') id: string, @Query('status') status: 'rejected'): Promise<void> {
+	public async delete(
+		@Query('id') id: string,
+		@Query('status') status: BookingStatus.REJECTED,
+	): Promise<void> {
 		await this.bookingService.delete(id, status);
 	}
 }

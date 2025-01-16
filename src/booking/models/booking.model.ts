@@ -13,7 +13,7 @@ export class BookingModel {
 	@Prop()
 	bookingDate: Date;
 
-	@Prop({ default: 'pending' })
+	@Prop({ enum: BookingStatus, default: BookingStatus.PENDING })
 	status: BookingStatus;
 }
 export const BookingModelSchema = SchemaFactory.createForClass(BookingModel);

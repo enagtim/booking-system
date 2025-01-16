@@ -1,6 +1,10 @@
 import { Type } from 'class-transformer';
 import { IsString, IsDate } from 'class-validator';
-export type BookingStatus = 'pending' | 'completed' | 'rejected';
+export enum BookingStatus {
+	PENDING = 'pending',
+	COMPLETED = 'completed',
+	REJECTED = 'rejected',
+}
 export class IBookingModelDTO {
 	@IsString()
 	room_id: string;
