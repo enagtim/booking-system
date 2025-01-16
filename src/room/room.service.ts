@@ -3,7 +3,7 @@ import { RoomDocument, RoomModel } from './models/room.model';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { IRoomModelDto } from './dto/room.dto';
-import { ROOM_NOT_FOUND } from 'src/messages/error.messages';
+import { ROOM_NOT_FOUND } from '../messages/error.messages';
 
 @Injectable()
 export class RoomService {

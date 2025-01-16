@@ -3,13 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { BookingModel, BookingDocument } from './models/booking.model';
 import { Model } from 'mongoose';
 import { BookingStatus, IBookingModelDTO } from './dto/booking.dto';
-import { RoomModel } from 'src/room/models/room.model';
+import { RoomModel } from '../room/models/room.model';
 import {
 	BOOKING_NOT_FOUND,
 	BOOKING_NOT_FOUND_OR_NOT_STATUS_REJECTED,
 	ROOM_BOOKING,
 	ROOM_NOT_FOUND,
-} from 'src/messages/error.messages';
+} from '../messages/error.messages';
 
 @Injectable()
 export class BookingService {

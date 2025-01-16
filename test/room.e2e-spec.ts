@@ -1,0 +1,78 @@
+import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import * as request from 'supertest';
+import { AppModule } from '../src/app.module';
+import { IRoomModelDto } from '../src/room/dto/room.dto';
+import { disconnect } from 'mongoose';
+
+const testDto: IRoomModelDto = {
+	title: 'Отличная комната в центре города',
+	description: 'Комната со всеми удобствами',
+	countRooms: 3,
+	facilities: ['Интернет', 'Душ', 'Кондиционер'],
+};
+describe('RoomController (e2e)', () => {
+	let app: INestApplication;
+	let createdId: string;
+
+	beforeEach(async () => {
+		const moduleFixture: TestingModule = await Test.createTestingModule({
+			imports: [AppModule],
+		}).compile();
+		app = moduleFixture.createNestApplication();
+		await app.init();
+	});
+	it('/room/create (POST) - SUCCESS', async () => {
+		return request(app.getHttpServer())
+			.post('/room/create')
+			.send(testDto)
+			.expect(201)
+			.then(({ body }: request.Response) => {
+				createdId = body._id;
+				expect(createdId).toBeDefined();
+			});
+	});
+	it('/room/all (GET) - SUCCESS', async () => {
+		return request(app.getHttpServer())
+			.get('/room/all')
+			.expect(200)
+			.then(({ body }: request.Response) => {
+				expect(Array.isArray(body)).toBe(true);
+				if (body.length > 0) {
+					expect(body.length).toBeGreaterThan(0);
+				} else {
+					expect(body).toEqual([]);
+				}
+			});
+	});
+	it('/room/get/:id (GET) - SUCCESS', async () => {
+		return request(app.getHttpServer()).get(`/room/get/:id?id=${createdId}`).expect(200);
+	});
+	it('/room/get/:id (GET) - BAD', async () => {
+		return request(app.getHttpServer())
+			.get(`/room/get/:id?id=60e8f06a2e9b9b3b2c8d7e6a`)
+			.expect(404);
+	});
+	it('/room/update/:id (PATCH) - SUCCESS', async () => {
+		return request(app.getHttpServer())
+			.patch(`/room/update/:id?id=${createdId}`)
+			.expect(200)
+			.send({ title: 'Прекрасная комната в центре города' });
+	});
+	it('/room/update/:id (PATCH) - BAD', async () => {
+		return request(app.getHttpServer())
+			.patch(`/room/update/:id?id=60e8f06a2e9b9b3b2c8d7e6a`)
+			.expect(404);
+	});
+	it('/room/delete/:id (DELETE) - BAD', async () => {
+		return request(app.getHttpServer())
+			.delete(`/room/delete/:id?id=60e8f06a2e9b9b3b2c8d7e6a`)
+			.expect(404);
+	});
+	it('/room/delete/:id (DELETE) - SUCCESS', async () => {
+		return request(app.getHttpServer()).delete(`/room/delete/:id?id=${createdId}`).expect(204);
+	});
+	afterAll(() => {
+		disconnect();
+	});
+});
