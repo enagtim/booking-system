@@ -3,14 +3,14 @@ import { RoomDocument, RoomModel } from './models/room.model';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { IRoomModelDto } from './dto/room.dto';
-import { ROOM_NOT_FOUND } from 'messages/error.messages';
+import { ROOM_NOT_FOUND } from 'src/messages/error.messages';
 
 @Injectable()
 export class RoomService {
 	constructor(@InjectModel(RoomModel.name) private roomModel: Model<RoomDocument>) {}
 	public async create(dto: IRoomModelDto): Promise<RoomModel> {
 		const newRoom = new this.roomModel(dto);
-		return newRoom.save();
+		return await newRoom.save();
 	}
 	public async getById(id: string): Promise<RoomModel> {
 		const room = await this.roomModel.findById(id).exec();

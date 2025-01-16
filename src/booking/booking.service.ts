@@ -4,7 +4,7 @@ import { BookingModel, BookingDocument } from './models/booking.model';
 import { Model } from 'mongoose';
 import { IBookingModelDTO } from './dto/booking.dto';
 import { RoomModel } from 'src/room/models/room.model';
-import { BOOKING_NOT_FOUND, ROOM_BOOKING, ROOM_NOT_FOUND } from 'messages/error.messages';
+import { BOOKING_NOT_FOUND, ROOM_BOOKING, ROOM_NOT_FOUND } from 'src/messages/error.messages';
 
 @Injectable()
 export class BookingService {
