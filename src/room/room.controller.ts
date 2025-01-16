@@ -17,12 +17,12 @@ export class RoomController {
 	public async getAllRoom(): Promise<RoomModel[]> {
 		return this.roomService.getAll();
 	}
-	@Get(':id')
+	@Get('get/:id')
 	@HttpCode(200)
 	public async getRoomById(@Query('id') id: string): Promise<RoomModel> {
 		return this.roomService.getById(id);
 	}
-	@Patch(':id')
+	@Patch('update/:id')
 	@HttpCode(200)
 	public async updateRoom(
 		@Query('id') id: string,
@@ -31,7 +31,7 @@ export class RoomController {
 		return this.roomService.update(id, dto);
 	}
 	@HttpCode(204)
-	@Delete(':id')
+	@Delete('delete/:id')
 	public async deleteRoom(@Query('id') id: string): Promise<void> {
 		await this.roomService.delete(id);
 	}
