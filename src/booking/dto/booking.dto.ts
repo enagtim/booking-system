@@ -1,11 +1,18 @@
-enum BookingStatus {
+import { Type } from 'class-transformer';
+import { IsString, IsDate } from 'class-validator';
+export enum BookingStatus {
 	PENDING = 'pending',
 	COMPLETED = 'completed',
 	REJECTED = 'rejected',
 }
-export interface IBookingModelDTO {
+export class IBookingModelDTO {
+	@IsString()
 	room_id: string;
+
+	@IsDate()
+	@Type(() => Date)
 	bookingDate: Date;
-	status: BookingStatus;
-	deletedAt?: Date;
+
+	@IsString()
+	status?: BookingStatus;
 }

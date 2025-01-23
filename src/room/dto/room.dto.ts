@@ -1,22 +1,17 @@
-interface ILocation {
-	city: string;
-	country: string;
-	region: string;
-	address: string;
-}
-interface IFeedback {
-	author: string;
-	text: string;
-	location?: ILocation;
-	createdAt: Date;
-}
-export interface IRoomModelDto {
+import { IsArray, IsNumber, IsString, Max, Min } from 'class-validator';
+
+export class IRoomModelDto {
+	@IsString()
 	title: string;
-	images: string[];
-	discription: string;
+
+	@IsString()
+	description: string;
+
+	@Min(1)
+	@Max(5)
+	@IsNumber()
 	countRooms: number;
+
+	@IsArray()
 	facilities: string[];
-	rating: number;
-	location: ILocation;
-	feedback: IFeedback[];
 }
