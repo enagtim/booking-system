@@ -8,12 +8,16 @@ export type UserDocument = HydratedDocument<UserModel>;
 export class UserModel {
 	@Prop({ unique: true })
 	email: string;
+
 	@Prop()
 	password: string;
+
 	@Prop()
 	name: string;
+
 	@Prop()
 	phone: number;
+
 	@Prop({ enum: UserRole, default: UserRole.USER })
 	role: UserRole;
 }

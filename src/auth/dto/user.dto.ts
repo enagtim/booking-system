@@ -1,4 +1,4 @@
-import { IsString, MinLength, IsEnum, IsNumberString } from 'class-validator';
+import { IsString, MinLength, IsNumberString, IsNotEmpty } from 'class-validator';
 
 export enum UserRole {
 	ADMIN = 'Администратор',
@@ -6,18 +6,21 @@ export enum UserRole {
 }
 export class IUserDto {
 	@IsString()
+	@IsNotEmpty()
 	email: string;
 
 	@IsString()
+	@IsNotEmpty()
 	@MinLength(8)
 	password: string;
 
 	@IsString()
+	@IsNotEmpty()
 	name: string;
 
 	@IsNumberString()
+	@IsNotEmpty()
 	phone: number;
 
-	@IsEnum(UserRole)
 	role?: UserRole;
 }
