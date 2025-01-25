@@ -24,7 +24,7 @@ export class BookingService {
 		}
 		const existingBooking = await this.bookingModel.findOne({
 			room_id: dto.room_id,
-			bookingDate: dto.bookingDate,
+			bookingDate: dto.bookingDate.toISOString(),
 		});
 		if (existingBooking) {
 			throw new BadRequestException(ROOM_BOOKING);
