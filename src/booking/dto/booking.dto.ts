@@ -5,7 +5,7 @@ export enum BookingStatus {
 	COMPLETED = 'completed',
 	REJECTED = 'rejected',
 }
-export class IBookingModelDTO {
+export class BookingModelDTO {
 	@IsString()
 	room_id: string;
 

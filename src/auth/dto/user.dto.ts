@@ -4,7 +4,7 @@ export enum UserRole {
 	ADMIN = 'Администратор',
 	USER = 'Пользователь',
 }
-export class IUserDto {
+export class UserDto {
 	@IsString()
 	@IsNotEmpty()
 	email: string;

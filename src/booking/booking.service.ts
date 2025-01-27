@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { BookingModel, BookingDocument } from './models/booking.model';
 import { Model } from 'mongoose';
-import { BookingStatus, IBookingModelDTO } from './dto/booking.dto';
+import { BookingStatus, BookingModelDTO } from './dto/booking.dto';
 import { RoomModel } from '../room/models/room.model';
 import {
 	BOOKING_NOT_FOUND,
@@ -17,7 +17,7 @@ export class BookingService {
 		@InjectModel(BookingModel.name) private bookingModel: Model<BookingDocument>,
 		@InjectModel(RoomModel.name) private roomModel: Model<RoomModel>,
 	) {}
-	public async create(dto: IBookingModelDTO): Promise<BookingModel> {
+	public async create(dto: BookingModelDTO): Promise<BookingModel> {
 		const room = await this.roomModel.findById(dto.room_id);
 		if (!room) {
 			throw new NotFoundException(ROOM_NOT_FOUND);
@@ -42,7 +42,7 @@ export class BookingService {
 		}
 		return booking;
 	}
-	public async update(id: string, dto: Partial<IBookingModelDTO>): Promise<BookingModel> {
+	public async update(id: string, dto: Partial<BookingModelDTO>): Promise<BookingModel> {
 		const existingBooking = await this.bookingModel.findById(id).exec();
 		if (!existingBooking) {
 			throw new NotFoundException(BOOKING_NOT_FOUND);

@@ -11,7 +11,7 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { RoomService } from './room.service';
-import { IRoomModelDto } from './dto/room.dto';
+import { RoomModelDto } from './dto/room.dto';
 import { RoomModel } from './models/room.model';
 
 @Controller('room')
@@ -21,7 +21,7 @@ export class RoomController {
 	@UsePipes(new ValidationPipe())
 	@Post('create')
 	@HttpCode(201)
-	public async createRoom(@Body() dto: IRoomModelDto): Promise<RoomModel> {
+	public async createRoom(@Body() dto: RoomModelDto): Promise<RoomModel> {
 		return this.roomService.create(dto);
 	}
 	@Get('all')
@@ -38,7 +38,7 @@ export class RoomController {
 	@HttpCode(200)
 	public async updateRoom(
 		@Query('id') id: string,
-		@Body() dto: Partial<IRoomModelDto>,
+		@Body() dto: Partial<RoomModelDto>,
 	): Promise<RoomModel> {
 		return this.roomService.update(id, dto);
 	}

@@ -11,7 +11,7 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { BookingStatus, IBookingModelDTO } from './dto/booking.dto';
+import { BookingStatus, BookingModelDTO } from './dto/booking.dto';
 import { BookingModel } from './models/booking.model';
 
 @Controller('booking')
@@ -21,7 +21,7 @@ export class BookingController {
 	@UsePipes(new ValidationPipe())
 	@Post('create')
 	@HttpCode(201)
-	public async createBooking(@Body() dto: IBookingModelDTO): Promise<BookingModel> {
+	public async createBooking(@Body() dto: BookingModelDTO): Promise<BookingModel> {
 		return this.bookingService.create(dto);
 	}
 	@Get('all')
@@ -38,7 +38,7 @@ export class BookingController {
 	@HttpCode(200)
 	public async updateBooking(
 		@Query('id') id: string,
-		@Body() dto: Partial<IBookingModelDTO>,
+		@Body() dto: Partial<BookingModelDTO>,
 	): Promise<BookingModel> {
 		return this.bookingService.update(id, dto);
 	}

@@ -1,6 +1,6 @@
 import { IsArray, IsNumber, IsString, Max, Min } from 'class-validator';
 
-export class IRoomModelDto {
+export class RoomModelDto {
 	@IsString()
 	title: string;
 
