@@ -1,8 +1,8 @@
 import { IsString, MinLength, IsNumberString, IsNotEmpty } from 'class-validator';
 
 export enum UserRole {
-	ADMIN = 'Администратор',
-	USER = 'Пользователь',
+	ADMIN = 'admin',
+	USER = 'user',
 }
 export class UserDto {
 	@IsString()

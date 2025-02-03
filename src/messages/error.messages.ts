@@ -6,3 +6,4 @@ export const BOOKING_NOT_FOUND_OR_NOT_STATUS_REJECTED =
 export const REGISTER_ERROR = 'Пользователь с таким email зарегистрирован';
 export const EMAIL_ERROR = 'Неверный email';
 export const PASSWORD_ERROR = 'Неверный пароль';
+export const NOT_AUTHORIZATION = 'Вы не авторизированы';

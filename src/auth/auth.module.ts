@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserModel, UserModelSchema } from './models/user.model';
+import { UserModel, UserModelSchema } from '../users/models/user.model';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { getJWTConfig } from 'src/configs/jwt.config';
+import { getJWTConfig } from '../configs/jwt.config';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
 	imports: [
@@ -17,6 +18,6 @@ import { getJWTConfig } from 'src/configs/jwt.config';
 		}),
 	],
 	controllers: [AuthController],
-	providers: [AuthService],
+	providers: [AuthService, UsersService],
 })
 export class AuthModule {}
