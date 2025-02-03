@@ -18,11 +18,8 @@ export class UsersService {
 		const newUser = new this.userModel({ ...dto, password: passwordHash });
 		return newUser.save();
 	}
-	public async findUser(email: string): Promise<UserModel> {
-		return this.userModel.findOne({ email }).exec();
-	}
-	public async getUserProfile(id: string): Promise<UserModel> {
-		const profile = await this.userModel.findById({ _id: id }).exec();
+	public async findProfile(id: string): Promise<UserModel> {
+		const profile = await this.userModel.findById(id).exec();
 		if (!profile) {
 			throw new UnauthorizedException(NOT_AUTHORIZATION);
 		}

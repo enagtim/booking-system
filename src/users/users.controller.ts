@@ -5,15 +5,9 @@ import { UsersService } from './users.service';
 export class UsersController {
 	constructor(private readonly userService: UsersService) {}
 
-	@Get('find')
+	@Get('profile/:id')
 	@HttpCode(200)
-	public async getUserByEmail(@Query() email: string) {
-		return this.userService.findUser(email);
-	}
-
-	@Get('profile')
-	@HttpCode(200)
-	public async getUserProfile(@Query() id: string) {
-		return this.userService.getUserProfile(id);
+	public async getUserProfile(@Query('id') id: string) {
+		return this.userService.findProfile(id);
 	}
 }
