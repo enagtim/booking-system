@@ -12,7 +12,7 @@ export class AuthService {
 		@InjectModel(UserModel.name) private readonly userModel: Model<UserDocument>,
 		private readonly jwtService: JwtService,
 	) {}
-	public async validateUser(email: string, password: string): Promise<Pick<UserModel, 'email'>> {
+	public async validateUser(email: string, password: string): Promise<UserModel> {
 		const user = await this.userModel.findOne({ email }).exec();
 		if (!user) {
 			throw new UnauthorizedException(EMAIL_ERROR);
@@ -21,10 +21,10 @@ export class AuthService {
 		if (!isCorrectPassword) {
 			throw new UnauthorizedException(PASSWORD_ERROR);
 		}
-		return { email: user.email };
+		return user;
 	}
-	public async login(email: string) {
-		const payload = { email };
+	public async login(user: UserModel): Promise<{ access_token: string }> {
+		const payload = { email: user.email, role: user.role };
 		return {
 			access_token: await this.jwtService.signAsync(payload),
 		};
