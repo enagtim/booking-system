@@ -6,8 +6,8 @@ export class BookingModelDTO {
 	@IsString()
 	room_id: string;
 
-	@IsDate()
 	@Type(() => Date)
+	@IsDate()
 	bookingDate: Date;
 
 	@IsOptional()
