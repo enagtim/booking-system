@@ -11,8 +11,9 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { BookingStatus, BookingModelDTO } from './dto/booking.dto';
+import { BookingModelDTO } from './dto/booking.dto';
 import { BookingModel } from './models/booking.model';
+import { BookingStatus } from '../enum/booking.status.enum';
 
 @Controller('booking')
 export class BookingController {

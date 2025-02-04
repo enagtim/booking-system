@@ -1,10 +1,7 @@
 import { Type } from 'class-transformer';
-import { IsString, IsDate } from 'class-validator';
-export enum BookingStatus {
-	PENDING = 'pending',
-	COMPLETED = 'completed',
-	REJECTED = 'rejected',
-}
+import { IsString, IsDate, IsEnum, IsOptional } from 'class-validator';
+import { BookingStatus } from '..//../enum/booking.status.enum';
+
 export class BookingModelDTO {
 	@IsString()
 	room_id: string;
@@ -13,6 +10,7 @@ export class BookingModelDTO {
 	@Type(() => Date)
 	bookingDate: Date;
 
-	@IsString()
+	@IsOptional()
+	@IsEnum(BookingStatus)
 	status?: BookingStatus;
 }

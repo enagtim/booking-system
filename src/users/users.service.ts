@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserModel, UserDocument } from './models/user.model';
 import { UserDto } from './dto/user.dto';
-import { NOT_AUTHORIZATION, REGISTER_ERROR } from 'src/messages/error.messages';
+import { NOT_AUTHORIZATION, REGISTER_ERROR } from '../messages/error.messages';
 import { hash } from 'bcrypt';
 
 @Injectable()

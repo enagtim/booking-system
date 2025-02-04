@@ -1,11 +1,12 @@
+import { BookingStatus } from '../src/enum/booking.status.enum';
 import { INestApplication } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
 import { disconnect } from 'mongoose';
 import { AppModule } from '../src/app.module';
-import { BookingStatus, IBookingModelDTO } from '../src/booking/dto/booking.dto';
+import { BookingModelDTO } from '../src/booking/dto/booking.dto';
 import * as request from 'supertest';
 
-const testDto: IBookingModelDTO = {
+const testDto: BookingModelDTO = {
 	room_id: '6788d1e7e809a248c257e027',
 	bookingDate: new Date(),
 	status: BookingStatus.PENDING,
