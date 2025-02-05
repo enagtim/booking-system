@@ -7,10 +7,14 @@ export class RoomModelDto {
 	@IsString()
 	description: string;
 
+	@IsNumber()
+	@Min(1)
+	roomNumber: number;
+
 	@Min(1)
 	@Max(5)
 	@IsNumber()
-	countRooms: number;
+	numberOfRooms: number;
 
 	@IsArray()
 	facilities: string[];

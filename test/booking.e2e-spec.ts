@@ -1,4 +1,3 @@
-import { BookingStatus } from '../src/enum/booking.status.enum';
 import { INestApplication } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
 import { disconnect } from 'mongoose';
@@ -6,11 +5,12 @@ import { AppModule } from '../src/app.module';
 import { BookingModelDTO } from '../src/booking/dto/booking.dto';
 import * as request from 'supertest';
 import { AuthDto } from '../src/auth/dto/auth.dto';
+import { parseDate } from '../src/helpers/date.parse';
 
 const testDto: BookingModelDTO = {
-	room_id: '6788d1e7e809a248c257e027',
-	bookingDate: new Date(),
-	status: BookingStatus.PENDING,
+	room_id: '67a35094f9e5270a590b9061',
+	bookingStartDate: parseDate('10-02-2025'),
+	bookingEndDate: parseDate('10-02-2025'),
 };
 
 const userLoginDto: AuthDto = {
@@ -46,7 +46,7 @@ describe('BookingController (e2e)', () => {
 		return request(app.getHttpServer())
 			.post('/booking/create')
 			.set('Authorization', 'Bearer ' + userToken)
-			.send({ ...testDto, bookingDate: testDto.bookingDate.toISOString() })
+			.send(testDto)
 			.expect(201)
 			.then(({ body }: request.Response) => {
 				createdId = body._id;
@@ -57,7 +57,7 @@ describe('BookingController (e2e)', () => {
 		return request(app.getHttpServer())
 			.post('/booking/create')
 			.set('Authorization', 'Bearer ' + userToken)
-			.send({ ...testDto, bookingDate: testDto.bookingDate.toISOString(), status: 'long' })
+			.send(testDto)
 			.expect(400);
 	});
 	it('/booking/all (GET) - SUCCESS', async () => {

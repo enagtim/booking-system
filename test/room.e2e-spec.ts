@@ -9,7 +9,8 @@ import * as request from 'supertest';
 const testDto: RoomModelDto = {
 	title: 'Отличная комната в центре города',
 	description: 'Комната со всеми удобствами',
-	countRooms: 3,
+	roomNumber: 102,
+	numberOfRooms: 3,
 	facilities: ['Интернет', 'Душ', 'Кондиционер'],
 };
 
@@ -48,7 +49,7 @@ describe('RoomController (e2e)', () => {
 		return request(app.getHttpServer())
 			.post('/room/create')
 			.set('Authorization', 'Bearer ' + token)
-			.send({ ...testDto, countRooms: 0 })
+			.send({ ...testDto, numberOfRooms: 0 })
 			.expect(400);
 	});
 	it('/room/all (GET) - SUCCESS', async () => {

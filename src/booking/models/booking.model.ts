@@ -11,7 +11,10 @@ export class BookingModel {
 	room_id: Types.ObjectId;
 
 	@Prop()
-	bookingDate: Date;
+	bookingStartDate: Date;
+
+	@Prop()
+	bookingEndDate: Date;
 
 	@Prop({ enum: BookingStatus, default: BookingStatus.PENDING })
 	status: BookingStatus;
