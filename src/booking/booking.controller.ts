@@ -70,4 +70,16 @@ export class BookingController {
 	): Promise<void> {
 		await this.bookingService.delete(id, status);
 	}
+
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.ADMIN)
+	@Get('stats')
+	public async getBookingStats(@Query('year') year: string, @Query('month') month: string) {
+		const stats = await this.bookingService.getMonthlyBookingStats(parseInt(year), parseInt(month));
+		return {
+			month,
+			year,
+			data: stats,
+		};
+	}
 }

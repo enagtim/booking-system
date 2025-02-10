@@ -57,4 +57,41 @@ export class BookingService {
 			throw new BadRequestException(BOOKING_NOT_FOUND_OR_NOT_STATUS_REJECTED);
 		}
 	}
+	public async getMonthlyBookingStats(year: number, month: number) {
+		const startDate = new Date(year, month - 1, 1);
+		const endDate = new Date(year, month, 0);
+
+		const result = await this.bookingModel.aggregate([
+			{
+				$match: {
+					bookingStartDate: { $lte: endDate },
+					bookingEndDate: { $gte: startDate },
+				},
+			},
+			{
+				$project: {
+					room_id: 1,
+					daysBooked: {
+						$subtract: [
+							{ $min: [endDate, '$bookingEndDate'] },
+							{ $max: [startDate, '$bookingStartDate'] },
+						],
+					},
+				},
+			},
+			{
+				$group: {
+					_id: '$room_id',
+					totalDaysBooked: { $sum: { $divide: ['$daysBooked', 1000 * 60 * 60 * 24] } },
+				},
+			},
+			{
+				$sort: { totalDaysBooked: -1 },
+			},
+		]);
+		return result.map((item) => ({
+			roomId: item._id,
+			daysBooked: Math.ceil(item.totalDaysBooked),
+		}));
+	}
 }
