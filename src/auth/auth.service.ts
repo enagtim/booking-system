@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
 import { compare } from 'bcrypt';
-import { EMAIL_ERROR, PASSWORD_ERROR } from '../messages/error.messages';
 import { UserModel, UserDocument } from '../users/models/user.model';
+import { ERROR_MESSAGES } from '../messages/error.messages';
 
 @Injectable()
 export class AuthService {
@@ -15,11 +15,11 @@ export class AuthService {
 	public async validateUser(email: string, password: string): Promise<UserModel> {
 		const user = await this.userModel.findOne({ email }).exec();
 		if (!user) {
-			throw new UnauthorizedException(EMAIL_ERROR);
+			throw new UnauthorizedException(ERROR_MESSAGES.EMAIL_ERROR);
 		}
 		const isCorrectPassword = await compare(password, user.password);
 		if (!isCorrectPassword) {
-			throw new UnauthorizedException(PASSWORD_ERROR);
+			throw new UnauthorizedException(ERROR_MESSAGES.PASSWORD_ERROR);
 		}
 		return user;
 	}

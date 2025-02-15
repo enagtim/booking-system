@@ -1,9 +1,4 @@
-import {
-	BOOKING_NOT_FOUND,
-	BOOKING_NOT_FOUND_OR_NOT_STATUS_REJECTED,
-	ROOM_BOOKING,
-	ROOM_NOT_FOUND,
-} from '../messages/error.messages';
+import { ERROR_MESSAGES } from '../messages/error.messages';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { BookingModel, BookingDocument } from './models/booking.model';
@@ -21,7 +16,7 @@ export class BookingService {
 	public async create(dto: BookingModelDTO): Promise<BookingModel> {
 		const room = await this.roomModel.findById(dto.room_id);
 		if (!room) {
-			throw new NotFoundException(ROOM_NOT_FOUND);
+			throw new NotFoundException(ERROR_MESSAGES.ROOM_NOT_FOUND);
 		}
 		const existingBooking = await this.bookingModel.findOne({
 			room_id: dto.room_id,
@@ -29,7 +24,7 @@ export class BookingService {
 			bookingEndDate: dto.bookingEndDate,
 		});
 		if (existingBooking) {
-			throw new BadRequestException(ROOM_BOOKING);
+			throw new BadRequestException(ERROR_MESSAGES.ROOM_BOOKING);
 		}
 		const newBooking = new this.bookingModel(dto);
 		return newBooking.save();
@@ -40,21 +35,21 @@ export class BookingService {
 	public async getById(id: string): Promise<BookingModel> {
 		const booking = await this.bookingModel.findById(id).exec();
 		if (!booking) {
-			throw new NotFoundException(BOOKING_NOT_FOUND);
+			throw new NotFoundException(ERROR_MESSAGES.BOOKING_NOT_FOUND);
 		}
 		return booking;
 	}
 	public async update(id: string, dto: Partial<BookingModelDTO>): Promise<BookingModel> {
 		const existingBooking = await this.bookingModel.findById(id).exec();
 		if (!existingBooking) {
-			throw new NotFoundException(BOOKING_NOT_FOUND);
+			throw new NotFoundException(ERROR_MESSAGES.BOOKING_NOT_FOUND);
 		}
 		return this.bookingModel.findByIdAndUpdate(id, dto, { new: true }).exec();
 	}
 	public async delete(id: string, status: BookingStatus): Promise<void> {
 		const result = await this.bookingModel.deleteOne({ _id: id, status: status }).exec();
 		if (result.deletedCount === 0) {
-			throw new BadRequestException(BOOKING_NOT_FOUND_OR_NOT_STATUS_REJECTED);
+			throw new BadRequestException(ERROR_MESSAGES.BOOKING_NOT_FOUND_OR_NOT_STATUS_REJECTED);
 		}
 	}
 	public async getMonthlyBookingStats(year: number, month: number) {
