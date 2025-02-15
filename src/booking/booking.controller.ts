@@ -1,16 +1,4 @@
-import {
-	Controller,
-	Post,
-	Body,
-	HttpCode,
-	Get,
-	Patch,
-	Delete,
-	Query,
-	UsePipes,
-	ValidationPipe,
-	UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Query, UseGuards } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { BookingModelDTO } from './dto/booking.dto';
 import { BookingModel } from './models/booking.model';
@@ -26,9 +14,7 @@ export class BookingController {
 
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.USER)
-	@UsePipes(new ValidationPipe())
 	@Post('create')
-	@HttpCode(201)
 	public async createBooking(@Body() dto: BookingModelDTO): Promise<BookingModel> {
 		return this.bookingService.create(dto);
 	}
@@ -36,15 +22,13 @@ export class BookingController {
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.ADMIN)
 	@Get('all')
-	@HttpCode(200)
 	public async getAllBooking(): Promise<BookingModel[]> {
 		return this.bookingService.getAll();
 	}
 
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.USER)
-	@Get('get/:id')
-	@HttpCode(200)
+	@Get('get/:bookingId')
 	public async getBookingById(@Query('id') id: string): Promise<BookingModel> {
 		return this.bookingService.getById(id);
 	}
@@ -52,7 +36,6 @@ export class BookingController {
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.USER)
 	@Patch('update/:id')
-	@HttpCode(200)
 	public async updateBooking(
 		@Query('id') id: string,
 		@Body() dto: Partial<BookingModelDTO>,
@@ -63,7 +46,6 @@ export class BookingController {
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.ADMIN)
 	@Delete('delete/:id')
-	@HttpCode(204)
 	public async delete(
 		@Query('id') id: string,
 		@Query('status') status: BookingStatus.REJECTED,
