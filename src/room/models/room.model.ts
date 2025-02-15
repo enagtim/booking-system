@@ -12,7 +12,10 @@ export class RoomModel {
 	description: string;
 
 	@Prop()
-	countRooms: number;
+	roomNumber: number;
+
+	@Prop()
+	numberOfRooms: number;
 
 	@Prop({ type: () => [String] })
 	facilities: string[];
