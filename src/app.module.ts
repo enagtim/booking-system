@@ -9,7 +9,7 @@ import { UsersModule } from './users/users.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot(),
-		MongooseModule.forRoot('mongodb://admin:admin@localhost:27017/booking-api?authSource=admin'),
+		MongooseModule.forRoot(process.env.MONGO_URI),
 		RoomModule,
 		BookingModule,
 		AuthModule,
