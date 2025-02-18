@@ -4,7 +4,7 @@ services:
     container_name: booking-system-api
     restart: always
     ports:
-      -3000:3000
+      - "3000:3000"
     volumes:
       -./env:./opt/app/.env
   mongodb:
